@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculo Mental</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f7f7f7;
+            color: #333;
+        }
+        .container {
+            text-align: center;
+            background-color: #fff;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 100%;
+            max-width: 400px;
+        }
+        .title {
+            font-size: 36px;
+            color: #4CAF50;
+            margin-bottom: 20px;
+        }
+        .result, .exercise {
+            font-size: 36px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .button {
+            padding: 15px 30px;
+            font-size: 20px;
+            margin: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .button:hover {
+            background-color: #45a049;
+        }
+        @media (max-width: 600px) {
+            .title {
+                font-size: 28px;
+            }
+            .result, .exercise {
+                font-size: 24px;
+            }
+            .button {
+                padding: 12px 25px;
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="title">Calculo Mental</div>
+        <div class="exercise" id="exercise">Haz clic para comenzar</div>
+        <div class="result" id="result">Resultado</div>
+        <button class="button" id="new-exercise">Nuevo Ejercicio</button>
+        <button class="button" id="show-result">Mostrar Resultado</button>
+    </div>
+
+    <script>
+        // Generador de operaciones
+        function operacion() {
+            const x = Math.floor(Math.random() * 4) + 1;
+            if (x === 1) return "+";
+            if (x === 2) return "-";
+            if (x === 3) return "x";
+            return ":";
+        }
+
+        function numero1(oper) {
+            let a = Math.floor(Math.random() * 100) + 1;
+            let x = Math.floor(Math.random() * 12) + 1;
+            if (oper === "+" || oper === "-" || oper === ":") return a;
+            return x;
+        }
+
+        function numero2(oper) {
+            let b = Math.floor(Math.random() * 100) + 1;
+            let y = Math.floor(Math.random() * 12) + 1;
+            if (oper === "+" || oper === "-") return b;
+            return y;
+        }
+
+        function ejercicio(oper, num1, num2) {
+            if (oper === "+") return `${num1} + ${num2}`;
+            if (oper === "-" && num1 > num2) return `${num1} - ${num2}`;
+            if (oper === "-" && num1 < num2) return `${num2} - ${num1}`;
+            if (oper === "x") return `${num1} x ${num2}`;
+            if (oper === ":" && num1 > num2 && num1 % num2 === 0) return `${num1} : ${num2}`;
+            if (oper === ":" && num2 > num1 && num2 % num1 === 0) return `${num2} : ${num1}`;
+            return `${num1} + ${num2}`;
+        }
+
+        function resultado(oper, num1, num2) {
+            if (oper === "+") return num1 + num2;
+            if (oper === "-") return Math.abs(num1 - num2);
+            if (oper === "x") return num1 * num2;
+            if (oper === ":" && num1 > num2 && num1 % num2 === 0) return Math.floor(num1 / num2);
+            if (oper === ":" && num2 > num1 && num2 % num1 === 0) return Math.floor(num2 / num1);
+            return num1 + num2;
+        }
+
+        // Variables globales
+        let op, num1, num2;
+
+        // Funciones de acción
+        function generar1() {
+            op = operacion();
+            num1 = numero1(op);
+            num2 = numero2(op);
+            document.getElementById("exercise").textContent = ejercicio(op, num1, num2);
+            document.getElementById("result").textContent = "Resultado";
+        }
+
+        function generar2() {
+            if (op != null) {
+                document.getElementById("result").textContent = "= " + resultado(op, num1, num2);
+            }
+        }
+
+        // Eventos de botones
+        document.getElementById("new-exercise").addEventListener("click", generar1);
+        document.getElementById("show-result").addEventListener("click", generar2);
+    </script>
+</body>
+</html>
